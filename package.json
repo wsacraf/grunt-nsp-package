@@ -11,7 +11,8 @@
     "text-table": "^0.2.0",
     "npm-registry-client": "^0.4.5",
     "semver": "^2.2.1",
-    "async": "^0.2.10"
+    "async": "^0.2.10",
+    "npmconf": "^0.1.13"
   },
   "devDependencies": {
     "precommit-hook": "^0.3.10"
