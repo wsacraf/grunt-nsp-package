@@ -128,16 +128,16 @@ module.exports = function (grunt) {
     }
     
     function prettyOutputResults(result, h, callback) {
-        var totalResults = result.length + 1
-        result.forEach(function(module) {
+        var totalResults = result.length + 1;
+        result.forEach(function (module) {
             if (!module.advisory.short_url) {
                 googl.shorten('https://nodesecurity.io/advisories/' + module.advisory.url)
-                    .then(function(shortUrl) {
+                    .then(function (shortUrl) {
                         module.advisory.short_url = shortUrl;
                         addResultRow(h, module);
                         if (h.length >= totalResults) callback();
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         addResultRow(h, module);
                         if (h.length >= totalResults) callback();
                     });
@@ -165,7 +165,7 @@ module.exports = function (grunt) {
                     color.underline('Advisory URL')
                 ]
             ];
-            prettyOutputResults(result, h, function() {
+            prettyOutputResults(result, h, function () {
                 var t = table(h, opts);
                 grunt.log.warn(t);
                 grunt.fail.warn('known vulnerable modules found');
