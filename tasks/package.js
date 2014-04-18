@@ -5,7 +5,7 @@ var npmconf = require('npmconf');
 var RegClient = require('npm-registry-client');
 var semver = require('semver');
 var async = require('async');
-
+var googl = require('goo.gl');
 
 var table = require('text-table');
 var color = require('cli-color');
@@ -116,27 +116,61 @@ module.exports = function (grunt) {
             cb();
         });
     }
+    
+    function addResultRow(h, module) {
+        h.push([
+            module.module,
+            module.version,
+            module.advisory.patched_versions,
+            module.dependencyOf.join(' > '),
+            module.advisory.short_url || 'See website'
+        ]);
+    }
+    
+    function prettyOutputResults(result, h, callback) {
+        var totalResults = result.length + 1
+        result.forEach(function(module) {
+            if (!module.advisory.short_url) {
+                googl.shorten('https://nodesecurity.io/advisories/' + module.advisory.url)
+                    .then(function(shortUrl) {
+                        module.advisory.short_url = shortUrl;
+                        addResultRow(h, module);
+                        if (h.length >= totalResults) callback();
+                    })
+                    .catch(function(error) {
+                        addResultRow(h, module);
+                        if (h.length >= totalResults) callback();
+                    });
+            } else {
+                addResultRow(h, module);
+                if (h.length >= totalResults) callback();
+            }
+        });
+    }
 
     function prettyOutput(result, done) {
         if (result && result.length > 0) {
             // Pretty output
             var opts = {
-                align: [ 'l', 'c', 'c', 'l' ],
+                align: [ 'l', 'c', 'c', 'l', 'l' ],
                 stringLength: function (s) { return ansiTrim(s).length; }
             };
 
             var h = [
                 [
-                    color.underline('Name'), color.underline('Installed'), color.underline('Patched'), color.underline('Vulnerable Dependency')
+                    color.underline('Name'),
+                    color.underline('Installed'),
+                    color.underline('Patched'),
+                    color.underline('Vulnerable Dependency'),
+                    color.underline('Advisory URL')
                 ]
             ];
-            result.forEach(function (module) {
-                h.push([module.module, module.version, module.advisory.patched_versions, module.dependencyOf.join(' > ')]);
+            prettyOutputResults(result, h, function() {
+                var t = table(h, opts);
+                grunt.log.warn(t);
+                grunt.fail.warn('known vulnerable modules found');
+                done();
             });
-            var t = table(h, opts);
-            grunt.log.warn(t);
-            grunt.fail.warn('known vulnerable modules found');
-            done();
         } else {
             grunt.log.writeln(color.green("No vulnerable modules found"));
             done();
