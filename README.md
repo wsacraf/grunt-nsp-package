@@ -24,4 +24,5 @@ MIT
 
 # Badges
 
+[![Build Status](https://secure.travis-ci.org/nodesecurity/grunt-nsp-package.svg)](http://travis-ci.org/nodesecurity/grunt-nsp-package)
 [![Dependency Status](https://david-dm.org/nodesecurity/grunt-nsp-package.png)](https://david-dm.org/nodesecurity/grunt-nsp-package)

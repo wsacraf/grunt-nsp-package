@@ -68,7 +68,6 @@ module.exports = function (grunt) {
             if (parents[module].indexOf(pkginfo.name) === -1) {
                 parents[module].push(pkginfo.name);
             }
-
             registry.get(module, pkginfo.dependencies[module], function (er, data, raw, res) {
                 if (data && data.versions) {
                     var ver = semver.maxSatisfying(Object.keys(data.versions), pkginfo.dependencies[module]);
