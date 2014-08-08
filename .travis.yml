@@ -1,5 +1,4 @@
 before_install:
-  - sudo apt-get install libicu-dev
   - npm i -g npm
   # Workaround for a permissions issue with Travis virtual machine images
   # that breaks Python's multiprocessing:
