@@ -62,42 +62,44 @@ module.exports = function (grunt) {
     function checkPackage(pkginfo, results, callback) {
         results = results || [];
 
-        async.forEach(Object.keys(pkginfo.dependencies), function (module, cb) {
+        if (pkginfo.dependencies) {
+            async.forEach(Object.keys(pkginfo.dependencies), function (module, cb) {
 
-            parents[module] = parents[module] || [];
-            if (parents[module].indexOf(pkginfo.name) === -1) {
-                parents[module].push(pkginfo.name);
-            }
-            registry.get(module, pkginfo.dependencies[module], function (er, data, raw, res) {
-                if (data && data.versions) {
-                    var ver = semver.maxSatisfying(Object.keys(data.versions), pkginfo.dependencies[module]);
-                    validateModule(module, ver, function (result) {
-                        if (result) {
-                            var d = {
-                                dependencyOf: resolveParents(module),
-                                module: module,
-                                version: ver,
-                                advisory: result[0]
-                            };
-                            results.push(d);
-                        }
-                        if (data && data.versions && data.versions[ver] && data.versions[ver].dependencies) {
-                            checkPackage(data.versions[ver], results, function () {
-                                cb();
-                            });
-                        } else {
-                            cb();
-                        }
-                    });
-                } else {
-                    cb();
+                parents[module] = parents[module] || [];
+                if (parents[module].indexOf(pkginfo.name) === -1) {
+                    parents[module].push(pkginfo.name);
                 }
-            });
-        }, function (err) {
-            callback(results);
-        });
-    }
 
+                registry.get(module, pkginfo.dependencies[module], function (er, data, raw, res) {
+                    if (data && data.versions) {
+                        var ver = semver.maxSatisfying(Object.keys(data.versions), pkginfo.dependencies[module]);
+                        validateModule(module, ver, function (result) {
+                            if (result) {
+                                var d = {
+                                    dependencyOf: resolveParents(module),
+                                    module: module,
+                                    version: ver,
+                                    advisory: result[0]
+                                };
+                                results.push(d);
+                            }
+                            if (data && data.versions && data.versions[ver] && data.versions[ver].dependencies) {
+                                checkPackage(data.versions[ver], results, function () {
+                                    cb();
+                                });
+                            } else {
+                                cb();
+                            }
+                        });
+                    } else {
+                        cb();
+                    }
+                });
+            }, function (err) {
+                callback(results);
+            });
+        }
+    }
 
     function validateModule(module, version, cb) {
         var url = 'https://nodesecurity.io/validate/' + module + '/' + version;
