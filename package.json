@@ -2,7 +2,10 @@
   "name": "grunt-nsp-package",
   "description": "Grunt plugin for Node Security Project package.json validation",
   "version": "0.0.3",
-  "author": "Adam Baldwin (https://nodesecurity.io)",
+  "author": {
+    "name": "Adam Baldwin",
+    "url": "https://nodesecurity.io"
+  },
   "dependencies": {
     "cli-color": "^0.2.3",
     "colors": "^0.6.2",
@@ -13,13 +16,17 @@
     "semver": "^2.2.1",
     "async": "^0.2.10",
     "npmconf": "^0.1.13",
-    "goo.gl": "^0.1.0"
+    "goo.gl": "^0.1.0",
+    "qs": "^1.2.0"
   },
   "devDependencies": {
-    "precommit-hook": "^0.3.10"
+    "precommit-hook": "^0.3.10",
+    "grunt": "^0.4.5"
   },
   "homepage": "https://github.com/nodesecurity/grunt-nsp-package/",
-  "bugs": "https://github.com/nodesecurity/grunt-nsp-package/issues/",
+  "bugs": {
+    "url": "https://github.com/nodesecurity/grunt-nsp-package/issues/"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:nodesecurity/grunt-nsp-package.git"
@@ -36,5 +43,13 @@
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
-  }
+  },
+  "readme": "# grunt-nsp-package\n\nAudits your package.json file against the nodesecurity.io API for validation that dependencies or dependencies of dependencies are not vulnerable to known vulnerabilities.\n\n# Installation\n\n    $ npm install grunt-nsp-package --save-dev\n\n# Usage\n\nAdd this line to your project's grunt.js gruntfile:\n```js\ngrunt.loadNpmTasks('grunt-nsp-package');\n```\n\nThen use the task `validate-package` build tasks eg.\n```js\ngrunt.registerTask(\"default\", 'validate-package');\n```\n\n# License\n\nMIT\n\n# Badges\n\n[![Dependency Status](https://david-dm.org/nodesecurity/grunt-nsp-package.png)](https://david-dm.org/nodesecurity/grunt-nsp-package)\n",
+  "readmeFilename": "README.md",
+  "_id": "grunt-nsp-package@0.0.3",
+  "dist": {
+    "shasum": "5702a99e66fe1db8a4d4b9fce66932927eb32584"
+  },
+  "_from": "grunt-nsp-package@",
+  "_resolved": "https://registry.npmjs.org/grunt-nsp-package/-/grunt-nsp-package-0.0.3.tgz"
 }
