@@ -13,7 +13,7 @@
     "semver": "^2.2.1",
     "async": "^0.2.10",
     "npmconf": "^0.1.13",
-    "goo.gl": "^0.1.0",
+    "goo.gl": "^0.1.2",
     "qs": "^1.2.0"
   },
   "devDependencies": {
