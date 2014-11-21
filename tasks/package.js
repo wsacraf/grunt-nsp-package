@@ -12,7 +12,7 @@ var color = require('cli-color');
 var ansiTrim = require('cli-color/lib/trim');
 
 var registry;
-var file = path.resolve(process.cwd(), 'package.json');
+var file = path.resolve(this.cwd, 'package.json');
 var pkg;
 
 
